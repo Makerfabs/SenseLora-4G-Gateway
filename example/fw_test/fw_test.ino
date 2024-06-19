@@ -26,9 +26,9 @@
 
 #define FREQUENCY 915.0 //868
 #define BANDWIDTH 125.0
-#define SPREADING_FACTOR 9
-#define CODING_RATE 7
-#define OUTPUT_POWER 10
+#define SPREADING_FACTOR 12
+#define CODING_RATE 6
+#define OUTPUT_POWER 20
 #define PREAMBLE_LEN 8
 #define GAIN 0
 
