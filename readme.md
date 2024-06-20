@@ -39,3 +39,8 @@ The factory test program detects whether the AT module can search for the operat
 ### at_test
 
 Used to debug the AT module and perform transparent serial port transmission.
+
+
+### lora2thingspeak
+
+The JSON data from the SenseLora Air Monitor is parsed and forwarded to ThingSpeak.
