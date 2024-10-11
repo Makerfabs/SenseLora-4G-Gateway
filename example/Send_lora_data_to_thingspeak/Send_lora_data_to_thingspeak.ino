@@ -42,7 +42,7 @@ int count = 0;
 void setup()
 {
 
-    Serial.begin(115200);
+    USBSerial.begin(115200);
     mySerial2.begin(115200, SERIAL_8N1, IO_RXD2, IO_TXD2);
     SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI);
 
@@ -55,7 +55,7 @@ void setup()
         String str = "{\"temp\":25.64,\"humi\":47.72}";
         char url[200];
         json2url(str, url);
-        Serial.println(url);
+        USBSerial.println(url);
         delay(3000);
     }
 }
@@ -70,7 +70,7 @@ void loop()
 
 void pin_init()
 {
-    Serial.println(F("void pin_init()"));
+    USBSerial.println(F("void pin_init()"));
 
     pinMode(BAT_PIN, INPUT);
     pinMode(IO_GSM_RST, OUTPUT);
@@ -89,17 +89,17 @@ void pin_init()
 
 void lora_init()
 {
-    Serial.println(F("void lora_init()"));
+    USBSerial.println(F("void lora_init()"));
 
     int state = radio.begin(FREQUENCY, BANDWIDTH, SPREADING_FACTOR, CODING_RATE, SX127X_SYNC_WORD, OUTPUT_POWER, PREAMBLE_LEN, GAIN);
     if (state == ERR_NONE)
     {
-        Serial.println(F("success!"));
+        USBSerial.println(F("success!"));
     }
     else
     {
-        Serial.print(F("failed, code "));
-        Serial.println(state);
+        USBSerial.print(F("failed, code "));
+        USBSerial.println(state);
         while (true)
             ;
     }
@@ -107,7 +107,7 @@ void lora_init()
 
 void at_init()
 {
-    Serial.println(F("void at_init()"));
+    USBSerial.println(F("void at_init()"));
 
     sendData("AT", 1000);
     delay(1000);
@@ -146,7 +146,7 @@ String sendData(String command, const int timeout)
         }
     }
 
-    Serial.print(response);
+    USBSerial.print(response);
 
     return response;
 }
@@ -160,29 +160,29 @@ void lora_receive_task()
     if (state == ERR_NONE)
     {
         // packet was successfully received
-        Serial.println(F("success!"));
+        USBSerial.println(F("success!"));
 
         // print the data of the packet
-        Serial.print(F("[SX1276] Data:\t\t\t"));
-        Serial.println(str);
+        USBSerial.print(F("[SX1276] Data:\t\t\t"));
+        USBSerial.println(str);
 
         // print the RSSI (Received Signal Strength Indicator)
         // of the last received packet
-        Serial.print(F("[SX1276] RSSI:\t\t\t"));
-        Serial.print(radio.getRSSI());
-        Serial.println(F(" dBm"));
+        USBSerial.print(F("[SX1276] RSSI:\t\t\t"));
+        USBSerial.print(radio.getRSSI());
+        USBSerial.println(F(" dBm"));
 
         // print the SNR (Signal-to-Noise Ratio)
         // of the last received packet
-        Serial.print(F("[SX1276] SNR:\t\t\t"));
-        Serial.print(radio.getSNR());
-        Serial.println(F(" dB"));
+        USBSerial.print(F("[SX1276] SNR:\t\t\t"));
+        USBSerial.print(radio.getSNR());
+        USBSerial.println(F(" dB"));
 
         // print frequency error
         // of the last received packet
-        Serial.print(F("[SX1276] Frequency error:\t"));
-        Serial.print(radio.getFrequencyError());
-        Serial.println(F(" Hz"));
+        USBSerial.print(F("[SX1276] Frequency error:\t"));
+        USBSerial.print(radio.getFrequencyError());
+        USBSerial.println(F(" Hz"));
 
         char url[200];
         json2url(str, url);
@@ -201,18 +201,20 @@ void lora_receive_task()
     else if (state == ERR_CRC_MISMATCH)
     {
         // packet was received, but is malformed
-        Serial.println(F("CRC error!"));
+        USBSerial.println(F("CRC error!"));
     }
     else
     {
         // some other error occurred
-        Serial.print(F("failed, code "));
-        Serial.println(state);
+        USBSerial.print(F("failed, code "));
+        USBSerial.println(state);
     }
 }
 
 // SenseLora Air Monitor
 // {"ID":"AirM01","COUNT":16,"SLEEP":3600,"bat":3.97,"temp":25.64,"humi":47.72,"eco2":400.00,"lux":109.17}
+// Senselora soil Monitor
+// {"ID":"SoilM01","COUNT":16,"SLEEP":3600,"bat":3.97,"temp":25.64,"humi":47.72,"PH":4.00}
 void json2url(String input, char *url)
 {
     JsonDocument doc;
