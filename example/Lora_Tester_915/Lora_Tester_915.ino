@@ -14,17 +14,18 @@
 // this pinout corresponds to RadioShield
 // https://github.com/jgromes/RadioShield
 
-#define DIO0 2
-#define DIO1 6
-// #define DIO2 7
-// #define DIO5 8
+#define DIO0 6
+#define DIO1 7
+// #define DIO2 15
+// #define DIO5 -1
 
-#define LORA_RST 9
-#define LORA_CS 10
+#define LORA_RST 5
+#define LORA_CS 4
 
 #define SPI_MOSI 11
-#define SPI_MISO 12
-#define SPI_SCK 13
+#define SPI_MISO 13
+#define SPI_SCK 12
+
 
 
 #define FREQUENCY 915.0
